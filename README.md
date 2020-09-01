@@ -13,6 +13,7 @@ Mail_Book is a text-based non-GUI programme which simply helps you to manage you
 
 # How to use
 * Download [Python 3](https://www.python.org/downloads/) in your device.
+* Download [Mail_Book](https://codeload.github.com/ahammadshawki8/Mail_Book/zip/master) repository inyour device.
 * Open **Mail_Book.py** file by double clicking on it
 * Use the programme by answering simple questions
 * Also you can manage emails manually by opening **email_ssheet.csv** file
