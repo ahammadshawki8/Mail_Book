@@ -33,11 +33,18 @@ def main():
         section = input("Enter the email's catagory: ").strip().lower()
         purpose = input("What is your purpose?\na. I want to add a new email\nb. I want to update an existing email\n(a/b) -> ").strip().lower()
         login(name,email,section,purpose)
+
+    close = input("\nDo you want to close Mail_book?\na. Close\nb. Don't Close\n(a/b) -> ").strip().lower()
     time.sleep(1)
-    print("Closing Mail Book...")
-    time.sleep(2)
-    print("\n\nCreator- Ahammad Shawki 8")
-    time.sleep(5)
+    if close == "b":
+        print("\n\nStarting Engine Again ...\n")
+        time.sleep(1)
+        main()
+    else:
+        print("\nClosing Mail Book...")
+        time.sleep(2)
+        print("\n\nCreator- Ahammad Shawki 8")
+        time.sleep(5)
 
 def print_all():
     query = []
