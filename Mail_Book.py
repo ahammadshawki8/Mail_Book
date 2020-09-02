@@ -100,6 +100,7 @@ def login(name,email,section,purpose):
             temp = name
             for i in it.count(2):
                 name = temp + " " + str(i)
+                query = search_strict(name)
                 total = 0
                 for line in query:
                     if name in line[0]:
