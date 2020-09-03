@@ -12,7 +12,7 @@ Mail_Book is a text-based non-GUI programme which simply helps you to manage you
 * Stores emails in a CSV file
 
 # How to use
-* Download [Python 3](https://www.python.org/downloads/) in your device.
+* Download and Install [Python 3](https://www.python.org/downloads/) in your device.
 * Download [Mail_Book](https://codeload.github.com/ahammadshawki8/Mail_Book/zip/master) repository's zip folder in your device.
 * Extract the zip file.
 * Open **Mail_Book.py** file by double-clicking on it
