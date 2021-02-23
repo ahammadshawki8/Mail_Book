@@ -22,4 +22,4 @@ Mail_Book is a text-based non-GUI programme which simply helps you to manage you
 * Also you can manage emails manually by opening **email_ssheet.csv** file
 
 # License
-Details can be found in [LICENSE](https://github.com/ahammadshawki8/Mail_Book/blob/master/LICENSE)
+Details can be found in [LICENSE](LICENSE)
