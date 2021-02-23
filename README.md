@@ -3,6 +3,8 @@
 # Mail_Book
 Mail_Book is a text-based non-GUI programme which simply helps you to manage your known emails. Using this Mail_Book, you can add, update and search email addresses. This programme is so simple that even a 10-year kid can operate this. Though it is created with Python3, it is also compatible with command line.
 
+> This is an older version of this application. For switching to the latest version click [here](https://github.com/ahammadshawki8/Mail_Book).
+
 # Features
 * Add new emails
 * Update existing emails
