@@ -100,6 +100,17 @@ def add_mail(value_list):
 
 def delete_mail(value_list):
     with psycopg2.connect(**config()) as delete_db:
+        cur0 = delete_db.cursor()
+        cur0.execute("""
+            SELECT * FROM email_address WHERE name = %s AND email = %s AND category = %s;
+        """, value_list)
+        rows = cur0.fetchall()
+        if len(rows) == 0:
+            condition = False
+        else: 
+            condition = True
+        cur0.close()
+        
         cur1 = delete_db.cursor()
         cur1.execute("""
             DELETE FROM email_address WHERE name = %s AND email = %s AND category = %s;
@@ -108,11 +119,22 @@ def delete_mail(value_list):
         cur1.close()
         delete_db.commit()
     delete_db.close()
-    return "Mail Deleted"
+    return condition
 
 
 def update_mail(past_value_list, new_value_list):
     with psycopg2.connect(**config()) as update_db:
+        cur0 = update_db.cursor()
+        cur0.execute("""
+            SELECT * FROM email_address WHERE name = %s AND email = %s AND category = %s;
+        """, past_value_list)
+        rows = cur0.fetchall()
+        if len(rows) == 0:
+            condition = False
+        else: 
+            condition = True
+        cur0.close()
+
         cur1 = update_db.cursor()
         cur1.execute("""
             UPDATE email_address SET name = %s, email = %s, category = %s WHERE (name = %s AND email = %s AND category = %s);
@@ -121,7 +143,7 @@ def update_mail(past_value_list, new_value_list):
         cur1.close()
         update_db.commit()
     update_db.close()
-    return "Mail Updated"
+    return condition
 
 
 def search_mail(search_key, search_by = "name", action = "soft"):

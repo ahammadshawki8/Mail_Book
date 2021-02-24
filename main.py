@@ -18,6 +18,8 @@ from kivy.base import runTouchApp
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.image import Image
 import webbrowser as web
+import database
+import mail
 
 # Setting up few things
 Config.set('graphics', 'height', 680)
@@ -78,38 +80,43 @@ class AddPanel(Screen):
         self.info_grid = GridLayout()
         self.info_grid.cols = 2
         self.info_grid.size_hint = 0.9, 0.4
-        self.info_grid.pos_hint = {"x": 0.05, "top": 0.65}
-        self.time_label = Button(text = "Meeting Time:", font_size = 14, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
-        self.info_grid.add_widget(self.time_label)
-        self.time_value = TextInput(text="HH:MM", multiline = False)
-        self.info_grid.add_widget(self.time_value)
-        self.meeting_id_label = Button(text = "Meeting ID:", font_size = 14, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
-        self.info_grid.add_widget(self.meeting_id_label)
-        self.meeting_id_value = TextInput(multiline = False)
-        self.info_grid.add_widget(self.meeting_id_value)
-        self.passcode_label = Button(text = "Passcode:", font_size = 14, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
-        self.info_grid.add_widget(self.passcode_label)
-        self.passcode_value = TextInput(multiline = False, password = True)
-        self.info_grid.add_widget(self.passcode_value)
-        self.organizer_label = Button(text = "Organizer:", font_size = 14, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
-        self.info_grid.add_widget(self.organizer_label)
-        self.organizer_value = TextInput(multiline = False)
-        self.info_grid.add_widget(self.organizer_value)
-        self.subject_label = Button(text = "Meeting Subject:", font_size = 14, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
-        self.info_grid.add_widget(self.subject_label)
-        self.subject_value = TextInput(multiline = False)
-        self.info_grid.add_widget(self.subject_value)
-        self.meeting_link_label = Button(text = "Browsable Link:", font_size = 14, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
-        self.info_grid.add_widget(self.meeting_link_label)
-        self.meeting_link_value = TextInput(multiline = False)
-        self.info_grid.add_widget(self.meeting_link_value)
+        self.info_grid.pos_hint = {"x": 0.05, "top": 0.67}
+
+        self.name_label = Button(text = "Fullname:", font_size = 14)
+        self.info_grid.add_widget(self.name_label)
+        self.name_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.name_value)
+        self.email_label = Button(text = "Email Address:", font_size = 14)
+        self.info_grid.add_widget(self.email_label)
+        self.email_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.email_value)
+        self.category_label = Button(text = "Category:", font_size = 14)
+        self.info_grid.add_widget(self.category_label)
+        self.category_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.category_value)
 
         self.add_widget(self.info_grid)
-        self.submit_button = Button(text = "Add Email", italic = True, font_size = 18, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
+        self.submit_button = Button(text = "Add Email", font_size = 18, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
         self.submit_button.size_hint = 0.4, 0.06
         self.submit_button.pos_hint = {"x":0.3,"top": 0.2}
         self.add_widget(self.submit_button)
-        self.submit_button.bind(on_release = lambda x: self.write_to_json())
+        self.submit_button.bind(on_release = lambda x: self.add_mail_function())
+
+    def add_mail_function(self):
+        value_list = []
+        value_list.append(self.name_value.text)
+        value_list.append(self.email_value.text)
+        value_list.append(self.category_value.text)
+        try:
+            if ("" in value_list):
+                show_AddPanelFailPop()
+            database.add_mail(value_list)
+            show_AddPanelSuccessPop()
+        except:
+            show_AddPanelFailPop()
+        self.name_value.text = ""
+        self.email_value.text = ""
+        self.category_value.text = ""
 
     def go_to_website(self):
         go_to_website()
@@ -120,6 +127,222 @@ class AddPanel(Screen):
                 sm.screens.remove(screen)
         sm.transition = SlideTransition(direction = "right")
         sm.current = "MainPanel"
+
+
+# Add Panel Success PopUp
+class AddPanelSuccessPop(FloatLayout):
+    pass
+
+def show_AddPanelSuccessPop():
+    show = AddPanelSuccessPop()
+    popup_window = Popup(title = "ADD EMAIL COMPLETED", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+# Add Panel Fail PopUp
+class AddPanelFailPop(FloatLayout):
+    pass
+
+def show_AddPanelFailPop():
+    show = AddPanelFailPop()
+    popup_window = Popup(title = "ADD EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+
+
+
+
+# UpdatePanel Class
+class UpdatePanel(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+        self.info_grid = GridLayout()
+        self.info_grid.cols = 2
+        self.info_grid.size_hint = 0.9, 0.4
+        self.info_grid.pos_hint = {"x": 0.05, "top": 0.67}
+
+        self.past_name_label = Button(text = "Past Fullname:", font_size = 14)
+        self.info_grid.add_widget(self.past_name_label)
+        self.past_name_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.past_name_value)
+        self.past_email_label = Button(text = "Past Email Address:", font_size = 14)
+        self.info_grid.add_widget(self.past_email_label)
+        self.past_email_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.past_email_value)
+        self.past_category_label = Button(text = "Past Category:", font_size = 14)
+        self.info_grid.add_widget(self.past_category_label)
+        self.past_category_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.past_category_value)
+
+        self.new_name_label = Button(text = "New Fullname:", font_size = 14)
+        self.info_grid.add_widget(self.new_name_label)
+        self.new_name_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.new_name_value)
+        self.new_email_label = Button(text = "New Email Address:", font_size = 14)
+        self.info_grid.add_widget(self.new_email_label)
+        self.new_email_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.new_email_value)
+        self.new_category_label = Button(text = "New Category:", font_size = 14)
+        self.info_grid.add_widget(self.new_category_label)
+        self.new_category_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.new_category_value)
+
+        self.add_widget(self.info_grid)
+        self.submit_button = Button(text = "Update Email", font_size = 18, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
+        self.submit_button.size_hint = 0.4, 0.06
+        self.submit_button.pos_hint = {"x":0.3,"top": 0.2}
+        self.add_widget(self.submit_button)
+        self.submit_button.bind(on_release = lambda x: self.update_mail_function())
+
+    def update_mail_function(self):
+        past_value_list = []
+        past_value_list.append(self.past_name_value.text)
+        past_value_list.append(self.past_email_value.text)
+        past_value_list.append(self.past_category_value.text)
+        new_value_list = []
+        new_value_list.append(self.new_name_value.text)
+        new_value_list.append(self.new_email_value.text)
+        new_value_list.append(self.new_category_value.text)
+        try:
+            if ("" in new_value_list) or ("" in past_value_list):
+                show_UpdatePanelFailPop()
+            else:
+                condition = database.update_mail(past_value_list, new_value_list)
+                if condition == False:
+                    show_UpdatePanelFailPop()
+                else:
+                    show_UpdatePanelSuccessPop()
+        except:
+            show_UpdatePanelFailPop()
+        self.past_name_value.text = ""
+        self.past_email_value.text = ""
+        self.past_category_value.text = ""
+        self.new_name_value.text = ""
+        self.new_email_value.text = ""
+        self.new_category_value.text = ""
+
+    def go_to_website(self):
+        go_to_website()
+
+    def go_back(self):
+        for screen in sm.screens:
+            if screen.name == "UpdatePanel":
+                sm.screens.remove(screen)
+        sm.transition = SlideTransition(direction = "right")
+        sm.current = "MainPanel"
+
+
+# Update Panel Success PopUp
+class UpdatePanelSuccessPop(FloatLayout):
+    pass
+
+def show_UpdatePanelSuccessPop():
+    show = UpdatePanelSuccessPop()
+    popup_window = Popup(title = "UPDATE EMAIL COMPLETED", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+# Update Panel Fail PopUp
+class UpdatePanelFailPop(FloatLayout):
+    pass
+
+def show_UpdatePanelFailPop():
+    show = UpdatePanelFailPop()
+    popup_window = Popup(title = "UPDATE EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+
+
+
+
+# DeletePanel Class
+class DeletePanel(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+        self.info_grid = GridLayout()
+        self.info_grid.cols = 2
+        self.info_grid.size_hint = 0.9, 0.4
+        self.info_grid.pos_hint = {"x": 0.05, "top": 0.67}
+
+        self.name_label = Button(text = "Fullname:", font_size = 14)
+        self.info_grid.add_widget(self.name_label)
+        self.name_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.name_value)
+        self.email_label = Button(text = "Email Address:", font_size = 14)
+        self.info_grid.add_widget(self.email_label)
+        self.email_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.email_value)
+        self.category_label = Button(text = "Category:", font_size = 14)
+        self.info_grid.add_widget(self.category_label)
+        self.category_value = TextInput(multiline = False)
+        self.info_grid.add_widget(self.category_value)
+
+        self.add_widget(self.info_grid)
+        self.submit_button = Button(text = "Delete Email", font_size = 18, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
+        self.submit_button.size_hint = 0.4, 0.06
+        self.submit_button.pos_hint = {"x":0.3,"top": 0.2}
+        self.add_widget(self.submit_button)
+        self.submit_button.bind(on_release = lambda x: self.delete_mail_function())
+
+    def delete_mail_function(self):
+        value_list = []
+        value_list.append(self.name_value.text)
+        value_list.append(self.email_value.text)
+        value_list.append(self.category_value.text)
+        try:
+            if ("" in value_list):
+                show_DeletePanelFailPop()
+            else:
+                condition = database.delete_mail(value_list)
+                print(condition)
+                if condition == False:
+                    show_DeletePanelFailPop()
+                else:
+                    show_DeletePanelSuccessPop()
+        except:
+            show_DeletePanelFailPop()
+        self.name_value.text = ""
+        self.email_value.text = ""
+        self.category_value.text = ""
+
+    def go_to_website(self):
+        go_to_website()
+
+    def go_back(self):
+        for screen in sm.screens:
+            if screen.name == "DeletePanel":
+                sm.screens.remove(screen)
+        sm.transition = SlideTransition(direction = "right")
+        sm.current = "MainPanel"
+
+
+# Add Panel Success PopUp
+class DeletePanelSuccessPop(FloatLayout):
+    pass
+
+def show_DeletePanelSuccessPop():
+    show = DeletePanelSuccessPop()
+    popup_window = Popup(title = "DELETE EMAIL COMPLETED", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+# Add Panel Fail PopUp
+class DeletePanelFailPop(FloatLayout):
+    pass
+
+def show_DeletePanelFailPop():
+    show = DeletePanelFailPop()
+    popup_window = Popup(title = "DELETE EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+
+
+
 
 
 

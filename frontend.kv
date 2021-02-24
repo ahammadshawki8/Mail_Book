@@ -47,12 +47,12 @@
             text: "MAIN PANEL FUNCTIONS"
             font_size: 22
             color: (0,0,0,1)
-            pos_hint: {"top": 1.35}
+            pos_hint: {"top": 1.28}
 
         GridLayout:
             cols: 1
             size_hint: (0.8, 0.5)
-            pos_hint: {"x": 0.1, "top": 0.75}
+            pos_hint: {"x": 0.1, "top": 0.72}
             Button:
                 text: "Add Email"
                 on_release:
@@ -120,15 +120,163 @@
                 root.go_back()
 
 
-# Add Meeting PopUp
-<AddPanelPop>:
+# Add Panel Success PopUp
+<AddPanelSuccessPop>:
+    Label:
+        text: "CONGRATS, EVERYTHING WENT SMOOTHLY :)"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.9}
+    Label:
+        text: "ADD MORE MAIL OR GO TO MAIN PANEL!"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.7}
+
+
+# Add Panel Fail PopUp
+<AddPanelFailPop>:
     Label:
         text: "SORRY, SOMETHING WENT WRONG :("
         font_size: 12
         size_hint: 0.6, 0.2
         pos_hint: {"x": 0.2, "top":0.9}
     Label:
-        text: "PLEASE ENTER THE MEETING TIME IN CORRECT FORMAT"
+        text: "PLEASE READ THE DOCS AND TRY AGAIN!"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.7}
+
+
+
+# UpdatePanel class
+<UpdatePanel>:
+    name: "UpdatePanel"
+
+    FloatLayout:
+        Image:
+            source: 'resources/header.png'
+            size_hint: (0.98,0.8)
+            pos_hint: {"x": 0.01, "top": 1.35}
+
+        Image:
+            source: 'resources/footer.png'
+            size_hint: (0.98,0.8)
+            pos_hint: {"x": 0.01, "top": .465}
+
+        Button:
+            background_normal: 'resources/profile.png'
+            background_down: 'resources/profile_down.png'
+            size_hint: (0.18,0.1)
+            pos_hint: {"x": 0.82, "top": 1.006}
+            on_release:
+                root.go_to_website()
+
+        Label:
+            text: "FILL UP THE FORM"
+            font_size: 25
+            color: (0, 0, 0,1)
+            pos_hint: {"top": 1.3}
+
+        Button:
+            background_normal: 'resources/cross.png'
+            background_down: 'resources/cross_down.png'
+            size_hint: (0.4/2,0.25/2)
+            pos_hint: {"x": 0.4, "top": 0.8}
+            on_release:
+                root.go_back()
+
+
+# Update Panel Success PopUp
+<UpdatePanelSuccessPop>:
+    Label:
+        text: "CONGRATS, EVERYTHING WENT SMOOTHLY :)"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.9}
+    Label:
+        text: "UPDATE MORE MAIL OR GO TO MAIN PANEL!"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.7}
+
+
+# Update Panel Fail PopUp
+<UpdatePanelFailPop>:
+    Label:
+        text: "SORRY, SOMETHING WENT WRONG :("
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.9}
+    Label:
+        text: "PLEASE READ THE DOCS AND TRY AGAIN!"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.7}
+
+
+
+# DeletePanel class
+<DeletePanel>:
+    name: "DeletePanel"
+
+    FloatLayout:
+        Image:
+            source: 'resources/header.png'
+            size_hint: (0.98,0.8)
+            pos_hint: {"x": 0.01, "top": 1.35}
+
+        Image:
+            source: 'resources/footer.png'
+            size_hint: (0.98,0.8)
+            pos_hint: {"x": 0.01, "top": .465}
+
+        Button:
+            background_normal: 'resources/profile.png'
+            background_down: 'resources/profile_down.png'
+            size_hint: (0.18,0.1)
+            pos_hint: {"x": 0.82, "top": 1.006}
+            on_release:
+                root.go_to_website()
+
+        Label:
+            text: "FILL UP THE FORM"
+            font_size: 25
+            color: (0, 0, 0,1)
+            pos_hint: {"top": 1.3}
+
+        Button:
+            background_normal: 'resources/cross.png'
+            background_down: 'resources/cross_down.png'
+            size_hint: (0.4/2,0.25/2)
+            pos_hint: {"x": 0.4, "top": 0.8}
+            on_release:
+                root.go_back()
+
+
+# Delete Panel Success PopUp
+<DeletePanelSuccessPop>:
+    Label:
+        text: "CONGRATS, EVERYTHING WENT SMOOTHLY :)"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.9}
+    Label:
+        text: "DELETE MORE MAIL OR GO TO MAIN PANEL!"
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.7}
+
+
+# Delete Panel Fail PopUp
+<DeletePanelFailPop>:
+    Label:
+        text: "SORRY, SOMETHING WENT WRONG :("
+        font_size: 12
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top":0.9}
+    Label:
+        text: "PLEASE READ THE DOCS AND TRY AGAIN!"
         font_size: 12
         size_hint: 0.6, 0.2
         pos_hint: {"x": 0.2, "top":0.7}
