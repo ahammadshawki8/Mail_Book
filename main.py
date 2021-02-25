@@ -67,9 +67,9 @@ class MainPanel(Screen):
         sm.current = "SearchPanel"
 
     def go_to_SendPanel(self):
-        sm.add_widget(SearchPanel(name="SearchPanel"))
+        sm.add_widget(SendPanel(name="SendPanel"))
         sm.transition = SlideTransition(direction = "left")
-        sm.current = "SearchPanel"
+        sm.current = "SendPanel"
 
 
 # AddPanel Class
@@ -320,7 +320,7 @@ class DeletePanel(Screen):
         sm.current = "MainPanel"
 
 
-# Add Panel Success PopUp
+# Delete Panel Success PopUp
 class DeletePanelSuccessPop(FloatLayout):
     pass
 
@@ -330,7 +330,7 @@ def show_DeletePanelSuccessPop():
     popup_window.open()
 
 
-# Add Panel Fail PopUp
+# Delete Panel Fail PopUp
 class DeletePanelFailPop(FloatLayout):
     pass
 
@@ -339,6 +339,102 @@ def show_DeletePanelFailPop():
     popup_window = Popup(title = "DELETE EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
     popup_window.open()
 
+
+
+
+
+
+
+# SendPanel Class
+class SendPanel(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+        self.info_grid = GridLayout()
+        self.info_grid.cols = 1
+        self.info_grid.size_hint = 0.9, 0.6
+        self.info_grid.pos_hint = {"x": 0.05, "top": 0.8}
+
+        self.info_grid2 = GridLayout()
+        self.info_grid2.cols = 2
+        self.to_label = Button(text = "To:", font_size = 14)
+        self.info_grid2.add_widget(self.to_label)
+        self.to_value = TextInput(multiline = False)
+        self.info_grid2.add_widget(self.to_value)
+        self.subject_label = Button(text = "Subject:", font_size = 14)
+        self.info_grid2.add_widget(self.subject_label)
+        self.subject_value = TextInput(multiline = False)
+        self.info_grid2.add_widget(self.subject_value)
+        self.attachment_path_label = Button(text = "Attachment Path:", font_size = 14)
+        self.info_grid2.add_widget(self.attachment_path_label)
+        self.attachment_path_value = TextInput(multiline = False)
+        self.info_grid2.add_widget(self.attachment_path_value)
+        self.attachment_type_label = Button(text = "Attachment Type:", font_size = 14)
+        self.info_grid2.add_widget(self.attachment_type_label)
+        self.attachment_type_value = TextInput(multiline = False)
+        self.info_grid2.add_widget(self.attachment_type_value)
+        self.info_grid.add_widget(self.info_grid2)
+
+        self.body_value = TextInput(multiline = True)
+        self.info_grid.add_widget(self.body_value)
+
+        self.add_widget(self.info_grid)
+        self.submit_button = Button(text = "Send Email", font_size = 18, color = (1,1,1,1), background_color = (0/255, 153/255, 204/255, 1))
+        self.submit_button.size_hint = 0.4, 0.06
+        self.submit_button.pos_hint = {"x":0.3,"top": 0.15}
+        self.add_widget(self.submit_button)
+        self.submit_button.bind(on_release = lambda x: self.send_mail_function())
+
+    def send_mail_function(self):
+        to = self.to_value.text
+        subject = self.subject_value.text
+        body = self.body_value.text
+        attachment_path = self.attachment_path_value.text
+        attachment_type = self.attachment_type_value.text
+
+        try:
+            if attachment_path == "" and attachment_type == "":
+                print(mail.send_email(to, subject, body))
+            else:
+                mail.send_email(to, subject, body, attachment_path=attachment_path, attachment_type=attachment_type)
+            show_SendPanelSuccessPop()
+        except:
+            show_SendPanelFailPop()
+        self.to_value.text = ""
+        self.subject_value.text = ""
+        self.body_value.text = ""
+        self.attachment_path_value.text = ""
+        self.attachment_type_value.text = ""
+
+    def go_to_website(self):
+        go_to_website()
+
+    def go_back(self):
+        for screen in sm.screens:
+            if screen.name == "SendPanel":
+                sm.screens.remove(screen)
+        sm.transition = SlideTransition(direction = "right")
+        sm.current = "MainPanel"
+
+
+# Send Panel Success PopUp
+class SendPanelSuccessPop(FloatLayout):
+    pass
+
+def show_SendPanelSuccessPop():
+    show = SendPanelSuccessPop()
+    popup_window = Popup(title = "SEND EMAIL COMPLETED", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
+
+
+# Send Panel Fail PopUp
+class SendPanelFailPop(FloatLayout):
+    pass
+
+def show_SendPanelFailPop():
+    show = SendPanelFailPop()
+    popup_window = Popup(title = "SEND EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
+    popup_window.open()
 
 
 
