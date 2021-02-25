@@ -21,11 +21,19 @@ import webbrowser as web
 import database
 import mail
 
+
+
+
+
 # Setting up few things
 Config.set('graphics', 'height', 680)
 Config.set('graphics', 'width', 380)
 Config.set('graphics', 'resizable', 0)
 Config.write()
+
+
+
+
 
 # Common Functions
 def go_to_website():
@@ -33,12 +41,28 @@ def go_to_website():
 
 
 
+
+
 # Get Started
 class GetStarted(Screen):
     def go_to_MainPanel(self):
+        with open("resources/first.txt", "r") as file:
+            content = file.read()
+            print(content)
+            if content == "True":
+                database.drop_database()
+                database.start_database()
+                with open("resources/first.txt", "w") as file:
+                    file.write("False")
+            else:
+                pass
         sm.add_widget(MainPanel(name="MainPanel"))
         sm.transition = SlideTransition(direction = "left")
         sm.current = "MainPanel"
+
+
+
+
 
 
 # Main Panel
@@ -70,6 +94,9 @@ class MainPanel(Screen):
         sm.add_widget(SendPanel(name="SendPanel"))
         sm.transition = SlideTransition(direction = "left")
         sm.current = "SendPanel"
+
+
+
 
 
 # AddPanel Class
@@ -147,7 +174,6 @@ def show_AddPanelFailPop():
     show = AddPanelFailPop()
     popup_window = Popup(title = "ADD EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
     popup_window.open()
-
 
 
 
@@ -259,7 +285,6 @@ def show_UpdatePanelFailPop():
 
 
 
-
 # DeletePanel Class
 class DeletePanel(Screen):
     def __init__(self, **kwargs):
@@ -340,8 +365,6 @@ def show_DeletePanelFailPop():
     show = DeletePanelFailPop()
     popup_window = Popup(title = "DELETE EMAIL ERROR", content = show, size_hint = (0.9, 0.2))
     popup_window.open()
-
-
 
 
 
@@ -443,6 +466,7 @@ def show_SendPanelFailPop():
 
 
 
+
 # Search Panel class
 class SearchPanel(Screen):
     def __init__(self, **kwargs):
@@ -475,27 +499,36 @@ class SearchPanel(Screen):
 
     def search_mail_function(self):
         search_key = self.key_value.text
-        search_by = self.by_value.text
-        if search_by == "name":
-            action = self.type_value.text
+        if search_key == "all":
             try:
-                info = database.search_mail(search_key,search_by=search_by,action=action)
+                info = database.search_mail(search_key)
                 sm.add_widget(MailDisplayer(info, name="MailDisplayer"))
                 sm.transition = SlideTransition(direction = "left")
                 sm.current = "MailDisplayer"
             except:
                 show_SearchPanelPop()
-            self.type_value.text = ""
         else:
-            try:
-                info = database.search_mail(search_key,search_by=search_by)
-                sm.add_widget(MailDisplayer(info, name="MailDisplayer"))
-                sm.transition = SlideTransition(direction = "left")
-                sm.current = "MailDisplayer"
-            except:
-                show_SearchPanelPop()
+            search_by = self.by_value.text
+            if search_by == "name":
+                action = self.type_value.text
+                try:
+                    info = database.search_mail(search_key,search_by=search_by,action=action)
+                    sm.add_widget(MailDisplayer(info, name="MailDisplayer"))
+                    sm.transition = SlideTransition(direction = "left")
+                    sm.current = "MailDisplayer"
+                except:
+                    show_SearchPanelPop()
+                self.type_value.text = ""
+            else:
+                try:
+                    info = database.search_mail(search_key,search_by=search_by)
+                    sm.add_widget(MailDisplayer(info, name="MailDisplayer"))
+                    sm.transition = SlideTransition(direction = "left")
+                    sm.current = "MailDisplayer"
+                except:
+                    show_SearchPanelPop()
+            self.by_value.text = ""
         self.key_value.text = ""
-        self.by_value.text = ""
 
 
     def go_to_website(self):
@@ -517,6 +550,8 @@ def show_SearchPanelPop():
     show = SearchPanelPop()
     popup_window = Popup(title = "SEARCH MAIL ERROR", content = show, size_hint = (0.9, 0.2))
     popup_window.open()
+
+
 
 
 
@@ -586,6 +621,8 @@ class MailDisplayer(Screen):
                 sm.screens.remove(screen)
         sm.transition = SlideTransition(direction = "right")
         sm.current = "SearchPanel"
+
+
 
 
 

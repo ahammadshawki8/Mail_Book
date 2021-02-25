@@ -3,8 +3,8 @@ import os
 # constants
 ALLOWED_CATAGORIES = ('me', 'family', 'friend', 'school', 'work', 'others')
 USER_MAIL = "ahammadshawki8@gmail.com"
-USER_PASSWORD = os.environ.get("MAIL_PASSWORD")
-DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+USER_PASSWORD = "enter-your-mail-passoword"
+DB_PASSWORD = "enter-your-postgres-db-password"
 SUPPORTED_TYPES = ("image", "pdf", "text", "csv")
 HOST = "localhost"
 PORT = 5432

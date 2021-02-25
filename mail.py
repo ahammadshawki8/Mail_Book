@@ -4,6 +4,7 @@ import imghdr
 from configuration import *
 
 
+
 def send_email(to, subject, body, attachment_path = None, attachment_type = None):
     msg = EmailMessage()
     msg["From"] = USER_MAIL

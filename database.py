@@ -3,6 +3,8 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from configuration import *
 
 
+
+
 def start_database():
     with psycopg2.connect(**admin_config()) as start_db:
         start_db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
@@ -57,6 +59,8 @@ def start_database():
 
 
 
+
+
 def drop_database():
     with psycopg2.connect(**config()) as drop_db:
         cur2 = drop_db.cursor()
@@ -80,6 +84,10 @@ def drop_database():
     drop_db.close()
     return "Database Closed"
 
+
+
+
+
 def add_mail(value_list):
     with psycopg2.connect(**config()) as add_db:
         cur1 = add_db.cursor()
@@ -96,6 +104,9 @@ def add_mail(value_list):
         add_db.commit()
     add_db.close()
     return "Mail Added"
+
+
+
 
 
 def delete_mail(value_list):
@@ -122,6 +133,9 @@ def delete_mail(value_list):
     return condition
 
 
+
+
+
 def update_mail(past_value_list, new_value_list):
     with psycopg2.connect(**config()) as update_db:
         cur0 = update_db.cursor()
@@ -146,10 +160,17 @@ def update_mail(past_value_list, new_value_list):
     return condition
 
 
+
+
+
 def search_mail(search_key, search_by = "name", action = "soft"):
     with psycopg2.connect(**config()) as search_db:
         cur1 = search_db.cursor()
-        if search_by == "name":
+        if search_key == "all":
+            cur1.execute("""
+                    SELECT * FROM email_address;
+                """)
+        elif search_by == "name":
             if action == "soft":
                 cur1.execute(f"""
                     SELECT * FROM email_address WHERE name ILIKE '%{search_key}%';
