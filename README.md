@@ -21,6 +21,7 @@ Mail_Book is a GUI-based programm which simply helps you to manage your known em
 <br>
 
 # How to use
+* Allow less secure app access or set app password for Python in your Mail server account (Gmail, Yahoo, Outlook, etc.)
 * Download and Install [Python 3](https://www.python.org/downloads/) in your device.
 * Download and Install [PostgreSQL]() in your device.
 * Download [Mail_Book](https://codeload.github.com/ahammadshawki8/Mail_Book/zip/master) repository's zip folder in your device.
